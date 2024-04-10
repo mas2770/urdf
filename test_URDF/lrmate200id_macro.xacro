@@ -123,7 +123,7 @@
             <inertia ixx="0.002" ixy="0.0" ixz="0.0" iyy="0.002" iyz="0.0" izz="0.002" />
         </inertial>
     </link>
-	<link name="gripper_link">
+	<link name="panda_hand">
     <visual>
       <geometry>
         <mesh filename="package://moveit_resources_panda_description/meshes/visual/hand.dae"/>
@@ -140,7 +140,7 @@
             <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
         </inertial>
   </link>
-  <link name="leftfinger">
+  <link name="panda_leftfinger">
     <visual>
       <geometry>
         <mesh filename="package://moveit_resources_panda_description/meshes/visual/finger.dae"/>
@@ -158,7 +158,7 @@
             <inertia ixx="0.03" iyy="0.03" izz="0.03" ixy="0.0" ixz="0.0" iyz="0.0" />
     </inertial>
   </link>
-  <link name="rightfinger">
+  <link name="panda_rightfinger">
     <visual>
       <origin rpy="0 0 3.141592653589793" xyz="0 0 0"/>
       <geometry>
@@ -227,27 +227,34 @@
       <limit effort="0" lower="${radians(-360)}" upper="${radians(360)}" velocity="${radians(1000)}" />
     <dynamics damping="20" friction="0.1"/>
     </joint>
-    <joint name="${prefix}link_6_gripper_link" type="fixed">
-      <origin xyz="0 0 0" rpy="${pi} ${-pi/2.0} 0" />
+    <link name="${prefix}flange" />
+    <joint name="${prefix}link_6-flange" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0" />
       <parent link="${prefix}link_6" />
-      <child link="gripper_link" />
+      <child link="${prefix}flange" />
+      <dynamics damping="20" friction="0.1"/>
+    </joint>
+    <joint name="${prefix}link6-tool0" type="fixed">
+      <origin xyz="0 0 0" rpy="${pi} ${-pi/2.0} 0" />
+      <parent link="${prefix}flange" />
+      <child link="panda_hand" />
     <dynamics damping="20" friction="0.1"/>
     </joint>
-    <joint name="finger_joint_1" type="prismatic">
-    <parent link="gripper_link"/>
-    <child link="leftfinger"/>
+    <joint name="tool0_finger_1" type="prismatic">
+    <parent link="panda_hand"/>
+    <child link="panda_leftfinger"/>
     <origin rpy="0 0 0" xyz="0 0 0.0584"/>
     <axis xyz="0 1 0"/>
     <limit effort="20" lower="0.0" upper="0.04" velocity="0.2"/>
     <dynamics damping="20" friction="0.1"/>
   </joint>
-  <joint name="finger_joint_2" type="prismatic">
-    <parent link="gripper_link"/>
-    <child link="rightfinger"/>
+  <joint name="tool0_finger_2" type="prismatic">
+    <parent link="panda_hand"/>
+    <child link="panda_rightfinger"/>
     <origin rpy="0 0 0" xyz="0 0 0.0584"/>
     <axis xyz="0 -1 0"/>
     <limit effort="20" lower="0.0" upper="0.04" velocity="0.2"/>
-    <mimic joint="finger_joint_1"/>
+    <!-- <mimic joint="tool0_finger_1"/> -->
     <dynamics damping="20" friction="0.1"/>
   </joint>
   <!--##########################################TRANS####################################-->
@@ -329,22 +336,22 @@
           <mechanicalReduction>1</mechanicalReduction>
         </actuator>
       </transmission>
-      <transmission name="trans_finger_joint_1">
+      <transmission name="trans_tool0_finger_1">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="finger_joint_1">
+        <joint name="tool0_finger_1">
             <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
         </joint>
-        <actuator name="finger_joint_1_motor">
+        <actuator name="tool0_finger_1_motor">
             <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_finger_joint_2">
+    <transmission name="trans_tool0_finger_2">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="finger_joint_2">
+        <joint name="tool0_finger_2">
             <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
         </joint>
-        <actuator name="finger_joint_2_motor">
+        <actuator name="tool0_finger_2_motor">
             <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
@@ -378,15 +385,15 @@
         <material>Gazebo/Yellow</material>
         <selfCollide>true</selfCollide>
       </gazebo>
-      <gazebo reference="gripper_link">
+      <gazebo reference="panda_hand">
         <material>Gazebo/Black</material>
         <selfCollide>true</selfCollide>
       </gazebo>
-      <gazebo reference="leftfinger">
+      <gazebo reference="panda_leftfinger">
         <material>Gazebo/Black</material>
         <selfCollide>true</selfCollide>
       </gazebo>
-      <gazebo reference="rightfinger">
+      <gazebo reference="panda_rightfinger">
         <material>Gazebo/Black</material>
         <selfCollide>true</selfCollide>
       </gazebo>

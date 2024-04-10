@@ -4,7 +4,7 @@
        xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
        xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:arg name="robot_namespace" default="" />
-  <xacro:include filename="$(find fanuc_lrmate200id_support)/urdf/lrmate200id_macro.xacro"/>
+  <xacro:include filename="$(find fanuc_lrmate200id_support)/urdf/test/lrmate200id_macro.xacro"/>
   <!--##############################################################################-->
   <link name="base_link">
       <visual>
